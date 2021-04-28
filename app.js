@@ -1,15 +1,16 @@
+const btns = document.querySelectorAll('button');
+const body = document.querySelector('body');
+let score = document.querySelector(".score");
+
+let cptUser = 0;
+let cptComputer = 0;
+
+btns.forEach(btn => btn.addEventListener('click', game));
+
 function computerPlay(){
     const element = ['Rock','Paper','Scissors'];
     const randomNumber = Math.floor(Math.random() * element.length);
     return element[randomNumber];
-}
-
-function playerSelection(){
-    let choix = '';
-    while(choix !== 'ROCK' && choix !== 'PAPER' && choix !== 'SCISSORS'){
-        choix = prompt("Rock, paper or scissors ?").toUpperCase();
-    }
-    return choix;
 }
 
 function singleRound(computerSelection, playerSelection){
@@ -20,20 +21,15 @@ function singleRound(computerSelection, playerSelection){
     return `You Win! ${playerSelection} beats ${computerSelection}`;
 }
 
-function game(){
-    
-    let cptUser = 0;
-    let cptComputer = 0;
-    for (let i = 0; i < 5; i++){
+function game(e){
+
         const computerElement = computerPlay();
-        const playerElement = playerSelection();
+        const playerElement = e.target.id
         const res = singleRound(computerElement, playerElement);
-        console.log(res);
+        const resultat = document.createElement('div');
+        resultat.innerText = res;
+        body.appendChild(resultat);
         if (res.indexOf("Win") > -1) cptUser++;
         else if (res.indexOf("Lose")) cptComputer++;
-    }
-    if (cptUser > cptComputer) console.log(`You WIN the game!!! ${cptUser} - ${cptComputer}`);
-    if (cptComputer > cptUser) console.log(`You LOSE the game!!! ${cptUser} - ${cptComputer}`);
-    else console.log("Equality");
+        score.innerText = `${cptUser} - ${cptComputer}`;
 }
-game();
